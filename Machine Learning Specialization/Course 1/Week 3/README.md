@@ -204,6 +204,144 @@ Görselde ayrıca "loss" ve "cost" kavramlarına değinilmiş. Basitçe, "loss" 
 Sonuç olarak, lineer regresyon hataları azaltmada daha basit ve doğrudan bir yola sahipken, lojistik regresyon daha karmaşık bir yapıda çalışır ve optimizasyonu daha dikkatli bir yaklaşım gerektirir.
 
 ![Logistic1](https://github.com/user-attachments/assets/77fd2b9f-bb5a-4822-a5b0-acadd866051a)
-![Logistic2](https://global.discourse-cdn.com/dlai/original/3X/c/2/c22ec781fe0d6baf52100555824f82d9537b5e0f.jpeg)
+![Logistic2](https://global.discourse-cdn.com/dlai/original/3X/c/2/c22ec781fe0d6baf52100555824f82d9537b5e0f.jpeg),
+
+
+## Logistic Loss Function
+Lojistik regresyonun bu kayıp fonksiyonu, modelin tahminlerini doğru yöne itmek için tasarlanmıştır. Doğru tahminlerde düşük bir ceza verirken, yanlış tahminlerde ağır bir ceza uygular. Bu yapı, modelin sınıflandırma görevlerinde daha iyi performans göstermesini sağlar. Özellikle yanlış sınıflandırmaların yüksek maliyeti olan durumlarda (örneğin, tıbbi teşhis), bu fonksiyon çok kullanışlıdır.
+
+ + ## Logistic Loss Function Image1
+Eğer gerçek etiket y=1y = 1y=1 ise, modelin tahmini ne kadar 1'e yakınsa (yani doğru tahmin yapıyorsa), kayıp o kadar düşük olur. Tahmin tamamen 1 olduğunda kayıp sıfıra yaklaşır. Ancak modelin tahmini 0'a yaklaştıkça kayıp hızla artar.
+
+Eğer gerçek etiket y=0y = 0y=0 ise, modelin tahmini ne kadar 0'a yakınsa, kayıp o kadar düşük olur. Ancak tahmin 1'e yaklaştıkça kayıp artar.
+
+Logaritmik yapı, bu kayıpları daha hassas bir şekilde ölçmemizi sağlar ve yanlış tahminlerde daha ağır bir ceza uygular. Bu, modelin doğru tahmin yapmaya daha fazla odaklanmasını sağlar.
+
++ ## Logistic Loss Function Image2
+
+Bu görselde benzer bilgiler biraz daha detaylı ele alınıyor:
+
+Eğer gerçek değer y=0y = 0y=0 ise ve modelin tahmini fff 0'a yakınsa, kayıp düşüktür. Ancak tahmin 1'e yaklaştığında kayıp hızla artar ve teorik olarak sonsuza gidebilir. Örneğin, model bir veriyi yanlışlıkla "1" (örneğin, kanser var) olarak tahmin ederse, bu ciddi bir hata olur ve kayıp çok büyük olur.
+
+Eğer gerçek değer y=1y = 1y=1 ise ve modelin tahmini 1'e yaklaştıkça kayıp azalır. Ancak tahmin 0'a yaklaştıkça, kayıp yine hızla artar
+
+Örneğin, model bir veriyi yanlışlıkla "0" (örneğin, kanser yok) olarak tahmin ederse, bu da ciddi bir hata olarak değerlendirilir.
+
+Görseldeki grafikler, tahminin doğru olduğu durumda kaybın nasıl sıfıra yaklaştığını ve yanlış tahminlerde kaybın nasıl hızla arttığını görselleştiriyor.
+
+![LogisticLossFonction1]
+![LogisticLossFunction2]
+
+## Lojistik Fonksiyon için maliyet fonsiyonu 
+Lojistik regresyonda cost (maliyet) fonksiyonu, modelin tüm veri kümesi üzerindeki performansını ölçmek için kullanılan bir yöntemdir. Her bir veri noktasındaki loss (kayıp) fonksiyonunun ortalaması alınarak hesaplanır. Bu, modelin genel hatasını değerlendirmemize olanak tanır.
+
+
++ ## Cost Fonksiyonunun Amacı
+Cost fonksiyonu, bir modelin yaptığı tahminlerin doğruluğunu ölçen bir araçtır. Modelin tüm veri setindeki performansını özetleyerek, hataları sayısal olarak ifade eder. Amaç, bu fonksiyonu minimize ederek modeli daha doğru hale getirmektir. Bu, modelin parametrelerini (örneğin, ağırlıklar ve bias) ayarlamak için kullanılır.
+
++ ## Cost fonksiyonu üç temel amaca hizmet eder:
+1.	Tüm Veriyi Kapsar : Birkaç tahminin doğru olması yeterli değildir; modelin tüm veri setindeki genel başarısı önemlidir.7
+2.	Modeli Yönlendirir: Hataları belirler ve bu hataları azaltacak şekilde modelin öğrenmesine rehberlik eder.
+3.	Doğruyu Ödüllendirir, Yanlışı Cezalandırır: Doğru tahminlere küçük, yanlış tahminlere büyük bir maliyet (hata) değeri verir.
+
++ ## Lojistik Regresyonda Cost Fonksiyonu Nasıl Çalışır?
+
+Lojistik regresyonda tahminler, modelin bir örneğin y=1y = 1y=1 ya da y=0y = 0y=0 olma olasılığını tahmin etmesine dayanır. Cost fonksiyonu, bu olasılıklar ile gerçek değerler arasındaki farkı değerlendirir:
+
+  -Gerçek etiket y=1y = 1y=1: Modelin tahmini f(x)f(x)f(x) değeri 1’e yaklaştıkça cost düşer. Eğer tahmin 0’a yaklaşırsa, cost hızla artar.
+
+  -Gerçek etiket y=0y = 0y=0: Modelin tahmini f(x)f(x)f(x) değeri 0’a yaklaştıkça cost düşer. Eğer tahmin 1’e yaklaşırsa, cost hızla artar.
+
+Bu yapı, modeli yanlış tahminlere karşı daha hassas hale getirir. Yanlış tahminler yapıldığında cost değeri çok yükselir, bu da modelin o tür hataları düzeltmesi için daha fazla öğrenmesini sağlar.
+
++ ## Cost Fonksiyonunun Özellikleri
+1.	Tüm Veri Üzerinde Ortalama Performans: Her bir veri noktası için hesaplanan hataları birleştirir ve tüm veri seti üzerindeki ortalama hatayı ölçer.
+2.	Hataları Minimize Etme: Modeli daha iyi hale getirmek için öğrenme sürecinde hataları azaltmaya çalışır.
+3.	Dengeli Hesaplama: Doğru tahminlere düşük maliyet, yanlış tahminlere yüksek maliyet vererek modelin genel başarısını optimize eder.
+
+Bir örnekle açıklamak gerekirse;
+      Bir öğretmen, öğrencilerinin sınav sonuçlarını değerlendirmek için bir sistem kuruyor. Eğer bir öğrenci doğru cevabı verdiyse, düşük bir hata puanı alıyor. Yanlış cevaplar verdiğinde ise hata puanı hızla artıyor. Ardından, tüm öğrencilerin hata puanlarının ortalamasını hesaplayarak sınıfın genel başarısını ölçüyor. Öğrencilerin kendini geliştirmesi için de bu hata puanlarını düşürmelerini hedefliyor.
+
+Cost fonksiyonu, aynen bu öğretmen gibi çalışıyor: Her bir veri noktasındaki hatayı ölçüyor, ortalamasını alıyor ve modeli geliştirmek için bu hataları minimize etmeye çalışıyor
+
+
+## Gradyan inişi
+![image](https://github.com/user-attachments/assets/280149ff-ee41-421e-aa75-892eb9b7c0a4)
+
+
+In order to find the best w and b, we utilize the gradient descent algorithm. Gradient descent and its variants are widely used in machine learning.
+![image](https://github.com/user-attachments/assets/22e9c46b-82f9-4c75-a755-905c483ab212)
+
+
+
+The gradient descent algorithm is a first-order iterative optimisation to find out the minimum value in the cost function. In this approach, we initialise w(weights) with a random value and find out the gradient. Then we update the w in the opposite direction of the gradient. And, this process continues until the cost minimum is found. The gradient always points towards the direction of the greatest increase, so in order to find the minimum or descent point, we update the weights in the opposite direction of the gradient. We apply the same approach to find the minimum of b as well.
+Based on the multiple linear regression algorithm, we know the fact that we can apply the gradient descent algorithm as shown below.
+
+![image](https://github.com/user-attachments/assets/5bd55ed3-65d9-438a-a4ba-eeac51d08e2b)
+
+We can expand further derivative term of the above algorithm to make it implementation ready. This concept is taken from the linear regression.
+![image](https://github.com/user-attachments/assets/1408c68f-c809-4fb0-8cc4-76d8bee579c1)
+![image](https://github.com/user-attachments/assets/46ff4245-8fcb-4818-9385-3b5e03bf2f2f)
+
+We can rewrite the f term with sigmoid function to complete the implementation ready algorithm for the gradient descent.
+![image](https://github.com/user-attachments/assets/dc1c5709-75ca-446c-8cf3-6a3207ef1f44)
+
+## Uyumun İyiliği
+İstatistikte uyum iyiliği , bir modelin tahmin edilen değerlerinin gözlenen (gerçek) değerlerle ne kadar yakın eşleştiğini ifade eder.
+Sinyal yerine gürültüyü öğrenen bir model, eğitim veri setine uyduğu ancak yeni veri setleriyle zayıf uyum sağladığı için "aşırı uyum" olarak kabul edilir.
+
+
+![aşırı uyum](https://github.com/user-attachments/assets/416d6ed9-3174-4217-9455-df432f34eb95)
+
+## Aşırı Uyum ve Yetersiz Uyum
+Aşırı uyumu, tam tersi sorun olan yetersiz uyuma bakarak daha iyi anlayabiliriz.
+
+Yetersiz uyum, bir modelin çok basit olması durumunda ortaya çıkar; çok az özellik ile bilgilendirilmiş veya çok fazla düzenlenmişse, bu da veri kümesinden öğrenmede esnek olmamasına neden olur.
+Basit öğrenenler, tahminlerinde daha az varyansa sahip olma eğilimindedirler ancak yanlış sonuçlara doğru daha fazla önyargıya sahiptirler.Öte yandan karmaşık öğrenenler tahminlerinde daha fazla varyansa sahip olma eğilimindedir.
+
+Makine öğrenmesinde hem önyargı hem de varyans birer tahmin hatasıdır.Tipik olarak, önyargıdan kaynaklanan hatayı azaltabiliriz ancak bunun sonucunda varyanstan kaynaklanan hatayı artırabiliriz veya tam tersi.
+
+Çok basit (yüksek önyargı) ile çok karmaşık (yüksek varyans) arasındaki bu denge, istatistik ve makine öğrenmesinde temel bir kavramdır ve tüm denetlenen öğrenme algoritmalarını etkiler.
+
+
+![Aşırı uyum ve yetersiz uyum](https://github.com/user-attachments/assets/30d4e7e4-3df5-4555-be4f-11a4c6436dd1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
